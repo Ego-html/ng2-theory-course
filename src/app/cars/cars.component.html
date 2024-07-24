@@ -1,0 +1,134 @@
+<div class="col-xs-8 col-xs-offset-2">
+  <h1>{{ asyncTitle | async }}</h1>
+  <input type="text" class="form-control" [(ngModel)]="searchCar">
+  <button class="btn btn-primary mt-3" (click)="addCar()">Добавить</button>
+  <hr>
+  <ul class="list-group">
+    <li
+      class="list-group-item"
+      *ngFor="let car of newCars | carFilter: searchCar; let i = index"
+    ><b>{{ i + 1 }}</b> {{ car.name }}
+    </li>
+  </ul>
+</div>
+
+<hr>
+<app-add-car (onAddCar)="updateCarList($event)"></app-add-car>
+<hr>
+
+<button class="btn btn-success" (click)="changeCarName()">Изменить имя машины</button>
+
+<!--Кнопка для добавления автомобилей с сервиса-->
+<button class="btn btn-info" (click)="displayCars()">Показать автомобили</button>
+<hr>
+<ul class="list-group">
+  <li *ngFor="let car of carsService" class="list-group-item">
+    <p><strong>{{ car.name }}</strong></p>
+  </li>
+</ul>
+
+<div class="list-group">
+  <div *ngFor="let car of cars" class="list-group-item" [ngClass]="getClass(car)">
+    <!--    <div class="alert alert-info">Это машина продана.</div>-->
+    <p>{{ car.name }}</p>
+    <div>
+      <button
+        class="btn btn-sm btn-primary"
+        [disabled]="car.isSold"
+        (click)="onAction('buy', car)"
+      >Купить
+      </button>
+      <button
+        class="btn btn-sm btn-default mr-3"
+        [disabled]="!car.isSold"
+        (click)="onAction('return',car)"
+      >Вернуть
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="col-xs-8 col-xs-offset-2">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div formGroupName="user">
+      <div class="form-group">
+        <label>Email</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="email"
+        >
+        <p>
+  <span
+    *ngIf="form.get('user.email')?.invalid && (form.get('user.email')?.hasError('emailIsUsed') === null || !form.get('user.email')?.hasError('emailIsUsed'))">
+    Введите корректный email
+  </span>
+          <span *ngIf="form.get('user.email')?.hasError('emailIsUsed')">
+    Такой email уже существует
+  </span>
+        </p>
+
+      </div>
+      <div class="form-group">
+        <label>Пароль</label>
+        <input
+          type="password"
+          class="form-control"
+          formControlName="pass"
+        >
+        <p
+          *ngIf="form.get('user.pass')?.invalid && form.get('user.pass')?.touched"
+        >
+          <span *ngIf="form.get('user.pass')?.hasError('lengthError') && !form.get('user.pass')?.hasError('required')">Пароль не должен быть меньше {{ charsCount }}
+            х символов!</span>
+          <span *ngIf="form.get('user.pass')?.hasError('required')">Пароль не должен быть пустым!</span>
+        </p>
+      </div>
+    </div>
+    <div class="form-control">
+      <label>Выберите страну</label>
+      <select
+        class="form-control"
+        formControlName="country">
+        <option value="ru">Россия</option>
+        <option value="by">Белоруссия</option>
+        <option value="kz">Казахстан</option>
+      </select>
+    </div>
+    <div class="radio" *ngFor="let ans of answers">
+      <label>
+        <input
+          type="radio"
+          name="answer"
+          [value]="ans.type"
+          formControlName="answer"
+        >
+        {{ ans.text }}
+      </label>
+    </div>
+    <button
+      class="btn btn-success mt-3"
+      type="submit"
+      [disabled]="form.invalid"
+    >Сохранить
+    </button>
+  </form>
+</div>
+
+
+<h1>{{appTitle}}</h1>
+<input type="text" class="form-control mt-3" [(ngModel)]="carName" >
+<hr>
+<button class="btn btn-primary mt-3" (click)="loadCars()">Загрузить машины</button>
+<button class="btn btn-success mt-3 ml-2" (click)="addNewCar()">Добавить машину</button>
+<hr>
+<ul class="list-group">
+  <li class="list-group-item" *ngFor="let car of myCar">
+    <span class="badge">{{ car.id }}</span> {{ car.name }} ({{ car.color }})
+  </li>
+</ul>
+
+   <!--<app-car *ngFor="let car of cars"></app-car>-->
+
+
+
