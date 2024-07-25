@@ -1,8 +1,16 @@
 <h2>Страница машин</h2>
 <hr>
 
-<ul class="list-group">
-  <li class="list-group-item" *ngFor="let car of cars">
-    <a href="">{{ car.name }}</a>
-  </li>
-</ul>
+<div class="row">
+  <div class="col-xs-6">
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let car of cars">
+        <a
+          [routerLink]="['/cars', car.id, car.name, car.year]"
+          [queryParams]="{year: car.year, color: car.color}">
+          {{ car.name }}</a>
+      </li>
+    </ul>
+  </div>
+</div>
+

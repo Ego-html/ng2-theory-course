@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {Router} from "@angular/router";
+
 
 @Component({
   selector: 'app-home-page',
@@ -9,4 +11,11 @@ import { Component } from '@angular/core';
 })
 export class HomePageComponent {
 
+  constructor(private router: Router) {
+  }
+
+  openCarsPage() {
+    this.router.navigate(['/cars']).then(r => {
+    });
+  }
 }
